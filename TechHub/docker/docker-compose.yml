@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  app:
+    build: ..
+    ports: ["3000:3000"]
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: techhub
+      DB_USER: techhub
+      DB_PASSWORD: techhub123
+    depends_on: [db]
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+  db:
+    image: postgres:16-alpine
+    ports: ["5432:5432"]
+    environment:
+      POSTGRES_DB: techhub
+      POSTGRES_USER: techhub
+      POSTGRES_PASSWORD: techhub123
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+volumes:
+  pg_data:
